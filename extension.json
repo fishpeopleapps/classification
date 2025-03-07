@@ -1,0 +1,40 @@
+{
+    "name": "ClassificationTool",
+    "version": "2.0",
+    "author": [
+        "Kimberly Brewer/contractor(ITSC)",
+		"Richard Goldberg/contractor(Intelink)"
+    ],
+    "descriptionmsg": "classificationtool-desc",
+	"license-name": "proprietary",
+	"type": "other",
+    "requires": {
+		"MediaWiki": ">= 1.39.0"
+	},
+	"MessagesDirs": {
+		"ClassificationTool": "i18n"
+	},
+    "schemaUpdates": [
+		"sql/page_classification.sql"
+	],
+    "AutoloadNamespaces": {
+        "ClassificationTool\\": "includes/"
+    },
+    "Hooks": {
+        "EditPage::showEditForm:fields": [
+            "ClassificationTool\\PageClassificationForm::onEditPageShowEditFormFields"
+        ],
+        "LoadExtensionSchemaUpdates": [
+            "ClassificationTool\\Hooks::onLoadExtensionSchemaUpdates"
+        ],
+        "BeforePageDisplay": "ClassificationTool\\Hooks::onBeforePageDisplay"
+    },
+    "ResourceModules": {
+        "ext.classificationForm": {
+            "scripts": ["resources/ext.classificationForm.js"],
+            "dependencies": ["mediawiki.util"]
+        }
+    },
+    "manifest_version": 2
+}
+
