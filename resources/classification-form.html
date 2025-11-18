@@ -1,0 +1,83 @@
+<!--
+File Purpose: Markup template for the Page Classification UI used by the ClassificationTool.
+How it’s used:
+- Rendered and/or populated by server (e.g., PageClassificationForm.php) and client JS (ClassificationForm.js).
+- Hidden by default; the JS toggles visibility and injects option lists into placeholder tokens.
+Contract for JS:
+- #edit-classification-button toggles the form.
+- #classification-form is the root container.
+- #page-classification, #page-dis, #relto-select hold option lists.
+- #declass-date, #reset-declass-date, #manual-review-declass manage declassification logic.
+- #sci-options and #fgi-options are filled with generated controls (checkboxes, etc.).
+Accessibility:
+- Fieldsets/legends group related inputs; labels use for= to associate with controls.
+-->
+
+<!-- Launch/toggle button: shown by JS only when appropriate (e.g., user has permission / context warrants). -->
+<button id="edit-classification-button" type="button" class="modern-classification-button" style="display:none;">Add New Classification</button>
+  
+<!-- Root container for the form; hidden until JS initializes/populates it. -->    
+<div id="classification-form" style="display:none;">
+    <fieldset>
+        <legend>Page Classification</legend>
+
+        <!-- Overall Page Classification (Dropdown) -->
+        <label for="page-classification">Classification:</label>
+        <select name="page-classification" id="page-classification">
+            <!-- CLASSIFICATION_OPTIONS -->
+        </select><br>
+
+        <fieldset>
+            <label for="is-cui">Page contains CUI?</label>
+                <!-- CUI_CHECKBOX -->
+        </fieldset>
+
+        <!-- Declassification Date -->
+        <fieldset>
+            <legend>Declassification</legend>
+            <label for="declass-date">Declassify On:</label>
+            <input type="text" id="declass-date" name="declass_date" placeholder="MM/DD/YYYY" />
+            <button type="button" id="reset-declass-date" class="declass-button">Reset to Default</button>
+            <button type="button" id="manual-review-declass" class="declass-button">Manual Review</button>
+        </fieldset>
+        
+
+        <!-- Dissemination Dropdown -->
+        <label for="page-dis">Dissemination:</label>
+        <select name="page-dis" id="page-dis">
+            <!-- DISSEMINATION_OPTIONS -->
+        </select><br>
+
+        <!-- RELTO -->
+        <fieldset>
+            <legend>RELTO:</legend>
+            <label for="relto-select">Countries:</label>
+            <select id="relto-select" name="rel_to_countries[]" multiple>
+                <!-- RELTO_OPTIONS -->
+            </select>
+        </fieldset>
+        
+
+
+        <!-- SCI -->
+        <fieldset>
+            <legend>SCI:</legend>
+            <div id="sci-options" style="display: flex; gap: 10px; align-items: center;">
+                <!-- SCI_OPTIONS -->
+            </div>
+        </fieldset>
+
+        
+
+        <!-- FGI -->
+        <fieldset>
+            <legend>FGI:</legend>
+            <div id="fgi-options" style="display: flex; gap: 10px; align-items: center;">
+                <!-- FGI_OPTIONS -->
+            </div>
+        </fieldset>
+
+        <!-- Save action: JS binds click handler, validates inputs, and submits via API. -->
+        <button id="classification-save-button" type="button" class="save-classification-button">Save</button>
+    </fieldset>
+</div>
