@@ -9,7 +9,10 @@
 	"license-name": "proprietary",
 	"type": "other",
     "requires": {
-		"MediaWiki": ">= 1.39.0"
+		"MediaWiki": ">= 1.43.0",
+        "extensions": {
+            "VisualEditor": "*"
+        }
 	},
 	"MessagesDirs": {
 		"ClassificationTool": "i18n"
@@ -20,6 +23,23 @@
     "AutoloadNamespaces": {
         "ClassificationTool\\": "includes/"
     },
+    "APIModules": {
+        "classification": "ClassificationTool\\ClassificationApi"
+    },
+    "attributes": {
+        "VisualEditor": {
+            "PluginModules": [
+                "ext.ClassificationTool.visualEditor"
+            ]
+        }
+    },
+    "config": {
+        "DeploymentEnvironment": {
+            "value": "TESTING",
+            "description": "Deployment environment: JWICS/SIPR/NIPR/TESTING.",
+            "public": true
+        }
+    },
     "Hooks": {
         "EditPage::showEditForm:fields": [
             "ClassificationTool\\PageClassificationForm::onEditPageShowEditFormFields"
@@ -27,13 +47,52 @@
         "LoadExtensionSchemaUpdates": [
             "ClassificationTool\\Hooks::onLoadExtensionSchemaUpdates"
         ],
-        "BeforePageDisplay": "ClassificationTool\\Hooks::onBeforePageDisplay"
+        "BeforePageDisplay": "ClassificationTool\\Hooks::onBeforePageDisplay",
+        "ResourceLoaderGetConfigVars": "MediaWiki\\Extension\\ClassificationTool\\Hooks::onResourceLoaderGetConfigVars"
     },
     "ResourceModules": {
         "ext.classificationForm": {
-            "scripts": ["resources/ext.classificationForm.js"],
-            "dependencies": ["mediawiki.util"]
+            "scripts": [
+                "extensions/ClassificationTool/resources/choices.min.js",
+                "extensions/ClassificationTool/resources/ext.classificationForm.js"
+                
+            ],
+            "styles": [
+                "extensions/ClassificationTool/resources/classification-form.css",
+                "extensions/ClassificationTool/resources/choices.css"
+            ],
+            "dependencies": [
+                "mediawiki.util",
+                "ext.visualEditor.core"
+            ]
+        },
+        "ext.ClassificationTool.visualEditor": {
+            "scripts": [
+                "extensions/ClassificationTool/resources/veClassificationTool.js"
+            ],
+            "styles": [],
+            "dependencies": [
+				"ext.visualEditor.core",
+				"ext.visualEditor.base",
+				"ext.visualEditor.mediawiki",
+				"ext.visualEditor.data",
+                "ext.visualEditor.desktopArticleTarget.init"
+            ],
+            "targets": [
+                "desktop"
+            ]
         }
+    },
+    "Permissions": {
+        "classificationeditor": {
+            "description": "Allows editing page classification after they have been submitted"
+        }
+    },
+    "Tests": {
+        "phpunit": [
+            "tests/phpunit/unit",
+            "tests/phpunit/integration"
+        ]
     },
     "manifest_version": 2
 }
